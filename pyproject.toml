@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "chind-eval"
+version = "0.1.0"
+description = ""
+authors = ["Jeremy Mann <jmann227@gmail.com>"]
+readme = "README.md"
+packages = [{include = "chind_eval"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openai = "^0.27.6"
+sqlalchemy = "^2.0.12"
+pandas = "^2.0.1"
+typer = "^0.9.0"
+pytest = "^7.3.1"
+jsonschema = "^4.17.3"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
