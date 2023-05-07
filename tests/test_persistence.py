@@ -1,8 +1,9 @@
-import pytest
 import pandas as pd
+import pytest
 
 from chind_eval import get_evaluation_results
-from chind_eval.persistence import parse_results_into_result_df, persist_results_to_db
+from chind_eval.persistence import (parse_results_into_result_df,
+                                    persist_results_to_db, get_uri_type)
 from chind_eval.utils import get_engine
 
 
@@ -27,8 +28,23 @@ def test_evaluation_results_can_into_db(results_df):
     assert len(results_df.columns) == len(expected_columns)
 
 
-def test_can_persist_results_to_db(results):
+def test_can_persist_results_to_db(results_df):
     engine = get_engine('sqlite:///:memory:')
-    persist_results_to_db(results, engine)
+    persist_results_to_db(results_df, engine)
     df = pd.read_sql('select * from evaluation_results;', engine)
-    assert len(df) == len(results)
+    assert len(df) == len(results_df)
+
+
+@pytest.mark.parametrize("url,expected", [
+    ('sqlite:///data.db', 'sql'),
+    ('foo.json', 'json'),
+    ('postgresql://user@localhost', 'sql'),
+    ('postgresql://user:secret@localhost', 'sql'),
+    ('postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp', 'sql'),
+    ('postgresql://localhost/mydb?user=other&password=secret', 'sql'),
+    ('fooc.csv', 'csv'),
+    ('foo.parquet', 'parquet'),
+    ('unknown.xyz', 'unknown')
+])
+def test_get_uri_type(url, expected):
+    assert get_uri_type(url) == expected

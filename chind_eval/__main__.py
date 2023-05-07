@@ -3,20 +3,20 @@ import json
 import typer
 
 from chind_eval import get_analysis, get_evaluation_results
+from chind_eval.persistence import persist_results
 
 app = typer.Typer()
 
 
 @app.command()
 def evaluate(
-    N: int = typer.Option(1, "-N", help="Number of samples"),
-    o: str = typer.Option(None, "-o", help="Filename of the output"),
-    m: str = typer.Option('mock', "-m", help="Model to Run"),
+    n_samples: int = typer.Option(1, "-N", help="Number of samples"),
+    output_file: str = typer.Option(None, "-o", help="Filename of the output"),
+    model_name: str = typer.Option('mock', "-m", help="Model to Run"),
 ):
-    data = get_evaluation_results(N, m)
-    if o:
-        with open(o, "w") as outfile:
-            json.dump(data, outfile)
+    data = get_evaluation_results(n_samples, model_name)
+    if output_file:
+        persist_results(data, output_file)
     else:
         print(data)
 
