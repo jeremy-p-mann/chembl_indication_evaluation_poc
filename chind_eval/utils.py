@@ -1,3 +1,6 @@
+from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
+
 def explode_dict_into_record(dct, parent_key=""):
     items = []
     for k, v in dct.items():
@@ -7,3 +10,7 @@ def explode_dict_into_record(dct, parent_key=""):
         else:
             items.append((new_key, v))
     return dict(items)
+
+
+def get_engine(db_uri: str) -> Engine:
+    return create_engine(db_uri)

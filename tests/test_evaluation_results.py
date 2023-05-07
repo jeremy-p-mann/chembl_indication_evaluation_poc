@@ -1,7 +1,6 @@
 import pytest
 from jsonschema import validate
 
-
 from chind_eval import get_evaluation_results, get_json_schema_for_output
 
 

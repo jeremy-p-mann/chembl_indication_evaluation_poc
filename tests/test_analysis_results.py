@@ -3,8 +3,8 @@ from jsonschema import validate
 
 from chind_eval import (get_analysis, get_evaluation_results,
                         get_json_schema_for_analysis)
-
 from chind_eval.prompts import get_answer_values
+
 
 @pytest.fixture(scope='module')
 def analysis_results():
