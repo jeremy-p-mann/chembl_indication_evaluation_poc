@@ -16,7 +16,7 @@ def get_example_response() -> str:
 
 
 def get_answer_values() -> List[str]:
-    return ["strongly disagree", "disagree", "don't know", "agree", "strongly agree"]
+    return ["strongly disagree", "disagree", "I do not know", "agree", "strongly agree"]
 
 
 def get_schema_for_output() -> str:
