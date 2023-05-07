@@ -1,5 +1,5 @@
 import json
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import pandas as pd
 
@@ -140,8 +140,7 @@ def get_analysis(
     model_name: str,
 ) -> Dict:
     if isinstance(evaluation, List):
-        answer_df = pd.DataFrame(
-            [explode_dict_into_record(x) for x in evaluation])
+        answer_df = pd.DataFrame([explode_dict_into_record(x) for x in evaluation])
     else:
         answer_df = evaluation
     avg_tokens, std_tokens, total_tokens = (
@@ -170,3 +169,5 @@ def get_analysis(
         'model': str(model_name),
     }
     return ans
+
+
