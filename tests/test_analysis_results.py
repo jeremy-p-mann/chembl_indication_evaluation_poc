@@ -1,18 +1,14 @@
 import pytest
 from jsonschema import validate
+import json
 
-from chind_eval import (get_analysis, get_evaluation_results,
-                        get_json_schema_for_analysis)
+from chind_eval import get_json_schema_for_analysis
 from chind_eval.prompts import get_answer_values
-
-
-@pytest.fixture(scope='module')
-def analysis_results():
-    return get_analysis(get_evaluation_results(100, 'mock'), 'mock')
 
 
 def test_result_first_result_fits_schema(analysis_results):
     schema = get_json_schema_for_analysis()
+    json.dumps(analysis_results)
     validate(analysis_results, schema)
 
 

@@ -136,10 +136,14 @@ def get_json_schema_for_analysis() -> Dict:
 
 
 def get_analysis(
-    evaluation: List[Dict],
+    evaluation: Union[List[Dict], pd.DataFrame],
     model_name: str,
 ) -> Dict:
-    answer_df = pd.DataFrame([explode_dict_into_record(x) for x in evaluation])
+    if isinstance(evaluation, List):
+        answer_df = pd.DataFrame(
+            [explode_dict_into_record(x) for x in evaluation])
+    else:
+        answer_df = evaluation
     avg_tokens, std_tokens, total_tokens = (
         answer_df['tokens_total'].mean(),
         answer_df['tokens_total'].std(),
@@ -159,10 +163,10 @@ def get_analysis(
             ans: answer_distribution.get(ans, 0)
             for ans in get_answer_values()
         },
-        'total_tokens': {'average': avg_tokens, 'standard_devation': std_tokens, 'total': total_tokens},
-        'execution_time_ms': {'average': avg_execution, 'standard_devation': std_execution, 'total': total_execution},
-        'n_indications': n_indications,
-        'n_samples': n_samples,
-        'model': model_name,
+        'total_tokens': {'average': avg_tokens, 'standard_devation': std_tokens, 'total': int(total_tokens)},
+        'execution_time_ms': {'average': avg_execution, 'standard_devation': std_execution, 'total': int(total_execution)},
+        'n_indications': int(n_indications),
+        'n_samples': int(n_samples),
+        'model': str(model_name),
     }
     return ans
