@@ -104,5 +104,5 @@ def load_previous_analysis(uri: str) -> Union[List[Dict], pd.DataFrame]:
         df = pd.read_csv(uri,)
     elif uri_type == 'sql':
         engine = get_engine(uri)
-        df = pd.read_sql('select * from analysis_results;', engine)
+        df = pd.read_sql('select * from evaluation_results;', engine)
     return df
