@@ -78,15 +78,20 @@ def get_evaluation_results(
     N: int,
     model_name: str,
 ) -> List[Dict]:
+    print(f'getting model {model_name}')
     model = get_model(model_name)
+    print(f'getting {N} treatments')
     treatments = get_chembl_treatments_df(N).to_dict('records')
     evaluations = []
     for treatment in treatments:
         prompt = get_model_prompts_from_chembl(
             treatment['intervention_name'], treatment['condition_name']
         )
+        print(f'getting output for treatment: {treatment}')
         model_output = model(prompt)
-        evaluations.append(format_results(model_output, model_name, treatment))
+        formatted_results = format_results(model_output, model_name, treatment)
+        print(f'Obtained results {formatted_results}')
+        evaluations.append(formatted_results)
     return evaluations
 
 

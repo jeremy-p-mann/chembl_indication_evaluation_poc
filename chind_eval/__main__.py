@@ -14,9 +14,12 @@ def evaluate(
     output_file: str = typer.Option(None, "-o", help="uri of the output"),
     model_name: str = typer.Option('mock', "-m", help="Model to Run"),
 ):
+    print(f'evaluating {n_samples} samples from {model_name}')
     data = get_evaluation_results(n_samples, model_name)
     if output_file:
+        print(f'persisting results to {output_file}')
         persist_results(data, output_file)
+        print('Complete')
     else:
         print(data)
 

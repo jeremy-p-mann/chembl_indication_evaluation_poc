@@ -112,16 +112,23 @@ def get_model(model: str) -> Model:
 
     def model_fn(model_prompt: ModelPrompt) -> Dict:
         execution_datetime = datetime.now().isoformat()
-        start_time = time.time()
-        resp = openai.ChatCompletion.create(
-            model=model_parsed.value,
-            temperature=0.5,
-            messages=[
-                {"role": "system", "content": model_prompt.system},
-                {"role": "user", "content": model_prompt.user},
-            ]
-        )
-        execution_duration = (time.time() - start_time) * 1000
+        was_successful = False
+        while not was_successful:
+            try:
+                start_time = time.time()
+                time.sleep(2)
+                resp = openai.ChatCompletion.create(
+                    model=model_parsed.value,
+                    temperature=0.5,
+                    messages=[
+                        {"role": "system", "content": model_prompt.system},
+                        {"role": "user", "content": model_prompt.user},
+                    ]
+                )
+                execution_duration = (time.time() - start_time) * 1000
+                was_successful = True
+            except Exception as e:
+                time.sleep(100)
         ans = {
             **format_openai_response(resp),
             'execution_duration_ms': execution_duration,
