@@ -45,34 +45,56 @@ poetry install
 
 ## Usage
 
-To use this CLI, navigate to the folder containing the Python script and run
-the following command:
-
-We recommend aliasing the following command:
+To see help, activate your virtual environment and execute:
 
 ```bash
-poetry run python3 chind_eval --help
+python3 chind_eval --help
 ```
 
-This will display the help information about the available flags and their usage.
 
-### Flags
+This CLI has two main commands: `evaluate` and `analyze`.
 
-- `-N`: The number of chembl samples to run.
-- `-o`: The name of the output file storing a json representation of the model's 
-  behavior.
-- `-m`: The name of the model to use.
+## Evaluate
 
-### Examples
+Evaluate a model using the following command:
 
-Run on 5 samples and save them in the file `output.json`:
-
-```bash
-poetry run python3 chind_eval -N 5 -o output.json
+```
+python3 chind_eval evaluate [OPTIONS]
 ```
 
-Run on 1 sample and save it to the file `evaluation.json`:
+### Options
 
-```bash
-python chind_eval
+- `-N, --n_samples`: Number of samples (default: 1)
+- `-o, --output_file`: URI of the output file to save the evaluation results
+- `-m, --model_name`: Model to run (default: 'mock')
+
+
+The output can be a csv, json or sql database uri.
+
+### Example
+
+```
+python3 chind_eval evaluate -N 10 -o output.csv -m mock
+```
+
+## Analyze
+
+Analyze the results of a model evaluation using the following command:
+
+```
+analyze [OPTIONS]
+```
+
+### Options
+
+- `-i, --input`: URI of the evaluation to analyze
+- `-o, --output_file`: URI to write the results of the analysis
+- `-m, --model_name`: Model to analyze (default: 'mock')
+
+The input can be a csv, json or sql database uri.
+
+### Example
+
+```
+analyze -i input.csv -o analysis.csv -m mock
 ```
